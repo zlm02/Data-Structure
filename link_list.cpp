@@ -53,10 +53,51 @@ int poseinsert(Node*L,int pose,ElementType x) {
     q->next=p->next;
     p->next=q;
     return 1;
+}
+//删除节点。失败返回0，成功返回1.
+int deleteNode(Node*L,int pose) {
+    Node *p=L;
+    int i=0;
+    while (i<pose-1) {
+        p=p->next;
+        i++;
+        if (p==NULL) {
+            return 0;
+        }
+    }
+    if (p->next==NULL) {
+        return 0;
+    }
+    Node* q=p->next;
+    p->next=q->next;
+    free(q);
+    return 1;
+}
+//获取链表长度并且return返回,不包含头节点。
+int lengthlist(Node* L) {
+    int length=0;
+    Node* p=L->next;
+    while (p!=NULL) {
+        p=p->next;
+        length++;
+    }
+    return length;
+}
+//链表的释放。
+void freelist(Node* L) {
+    Node* p=L;
+    Node *q;
+    while(p!=NULL) {
+        q=p->next;
+        free(p);
+        p=q;
+    }
+    L->next=NULL;
 
 
 }
 
+//链表的遍历。
 void showList(Node* L) {
     Node *p=L->next;
     while (p!=NULL) {
@@ -75,5 +116,8 @@ int main() {
     headinsert(head,2);
     tailinsert((get_tail(head)),5);
     poseinsert(head,2,3);
+    showList(head);
+    printf("%d\n",lengthlist(head));
+    deleteNode(head,1);
     showList(head);
 }
